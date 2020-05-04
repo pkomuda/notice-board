@@ -28,6 +28,10 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -66,7 +70,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.9.1</version>
+				<version>1.10.0</version>
 				<configuration>
 					<workingDirectory>src/main/js</workingDirectory>
 					<installDirectory>target</installDirectory>
@@ -78,7 +82,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v12.16.1</nodeVersion>
+							<nodeVersion>v12.16.3</nodeVersion>
 						</configuration>
 					</execution>
 					<execution>
