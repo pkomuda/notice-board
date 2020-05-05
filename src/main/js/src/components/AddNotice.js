@@ -66,7 +66,7 @@ class AddNotice extends React.Component {
             axios.post("/api/notice", tempNotice)
                 .then(response => {
                     alert(response.data);
-                    this.props.history.push("/notices");
+                    this.props.history.goBack();
                 }).catch(error => {
                 alert(error.response.data);
             });
