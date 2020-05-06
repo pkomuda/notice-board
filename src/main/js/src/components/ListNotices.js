@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Button, Spinner } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
@@ -13,8 +13,29 @@ class ListNotices extends React.Component {
         super(props);
         this.state = {
             notices: [],
-            columns: [],
-            loaded: false
+            columns: [{
+                dataField: "id",
+                text: "ID",
+                sort: true,
+                hidden: true
+            }, {
+                dataField: "title",
+                text: "Title",
+                sort: true
+            }, {
+                dataField: "publisher",
+                text: "Posted by",
+                sort: true
+            }, {
+                dataField: "added",
+                text: "Posted at",
+                sort: true
+            }, {
+                dataField: "details",
+                text: "Details",
+                isDummyField: true,
+                formatter: this.detailsButtonFormatter
+            }]
         };
     }
 
@@ -34,31 +55,7 @@ class ListNotices extends React.Component {
                     notice["added"] = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
                 }
                 this.setState({
-                    notices: tempNotices,
-                    columns: [{
-                        dataField: "id",
-                        text: "ID",
-                        sort: true,
-                        hidden: true
-                    }, {
-                        dataField: "title",
-                        text: "Title",
-                        sort: true
-                    }, {
-                        dataField: "publisher",
-                        text: "Posted by",
-                        sort: true
-                    }, {
-                        dataField: "added",
-                        text: "Posted at",
-                        sort: true
-                    }, {
-                        dataField: "details",
-                        text: "Details",
-                        isDummyField: true,
-                        formatter: this.detailsButtonFormatter
-                    }],
-                    loaded: true
+                    notices: tempNotices
                 });
             });
     };
@@ -68,29 +65,21 @@ class ListNotices extends React.Component {
     };
 
     renderTable = () => {
-        if (this.state.loaded) {
-            const sizes = [{
-                text: "10", value: 10
-            }, {
-                text: "25", value: 25
-            }, {
-                text: "50", value: 50
-            }, {
-                text: "100", value: 100
-            }];
-            return (
-                <div>
-                    <Button style={{marginBottom: "1em"}} onClick={this.handleAdd}>Add notice</Button>
-                    <BootstrapTable keyField="id" data={this.state.notices} columns={this.state.columns} pagination={paginationFactory({sizePerPageList: sizes})} bootstrap4={true}/>
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                    <Spinner animation="border"/>
-                </div>
-            )
-        }
+        const sizes = [{
+            text: "10", value: 10
+        }, {
+            text: "25", value: 25
+        }, {
+            text: "50", value: 50
+        }, {
+            text: "100", value: 100
+        }];
+        return (
+            <div>
+                <Button style={{marginBottom: "1em"}} onClick={this.handleAdd}>Add notice</Button>
+                <BootstrapTable keyField="id" data={this.state.notices} columns={this.state.columns} pagination={paginationFactory({sizePerPageList: sizes})} bootstrap4={true}/>
+            </div>
+        )
     };
 
     render() {
