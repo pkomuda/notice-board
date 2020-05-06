@@ -47,7 +47,7 @@ class ListNotices extends React.Component {
     };
 
     componentDidMount = () => {
-        axios.get("/api/notices")
+        axios.get("https://notice-board-wzas.herokuapp.com/api/notices")
             .then(response => {
                 let tempNotices = response.data;
                 for (let notice of tempNotices) {
@@ -57,6 +57,9 @@ class ListNotices extends React.Component {
                 this.setState({
                     notices: tempNotices
                 });
+            })
+            .catch(function (error) {
+                console.log(error)
             });
     };
 

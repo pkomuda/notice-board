@@ -13,7 +13,7 @@ class NoticeDetails extends React.Component {
     }
 
     componentDidMount = () => {
-        axios.get("/api/notice/" + this.props.match.params.id)
+        axios.get("https://notice-board-wzas.herokuapp.com/api/notice/" + this.props.match.params.id)
             .then(response => {
                 let tempNotice = response.data;
                 let d = new Date(tempNotice["added"]);

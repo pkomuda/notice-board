@@ -63,7 +63,7 @@ class AddNotice extends React.Component {
             let tempNotice = {...this.state.notice};
             tempNotice["id"] = uuidv4();
             tempNotice["added"] = new Date();
-            axios.post("/api/notice", tempNotice)
+            axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
                 .then(response => {
                     alert(response.data);
                     this.props.history.goBack();
