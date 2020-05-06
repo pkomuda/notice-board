@@ -50,4 +50,12 @@ public class NoticeController {
                 .status(HttpStatus.OK)
                 .body(noticeRepo.findAll());
     }
+
+    @DeleteMapping("/notices")
+    public ResponseEntity<String> deleteAllNotices() {
+        noticeRepo.deleteAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Notices deleted successfully.");
+    }
 }
