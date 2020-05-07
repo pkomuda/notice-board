@@ -6,6 +6,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "./ListNotices.css";
+import localforage from "localforage";
 
 class ListNotices extends React.Component {
 
@@ -37,6 +38,7 @@ class ListNotices extends React.Component {
                 formatter: this.detailsButtonFormatter
             }]
         };
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     detailsButtonFormatter = (cell, row) => {
@@ -47,8 +49,19 @@ class ListNotices extends React.Component {
     };
 
     componentDidMount = () => {
+        let that = this;
+        localforage.getItem('notices-list').then(function(value) {
+            that.setState({
+              notices: value
+            })
+            console.log("Notices loaded from indexedDB");
+        }).catch(function(err) {
+            console.log(err);
+        });
+
         axios.get("https://notice-board-wzas.herokuapp.com/api/notices")
             .then(response => {
+
                 let tempNotices = response.data;
                 for (let notice of tempNotices) {
                     let d = new Date(notice["added"]);
@@ -56,6 +69,9 @@ class ListNotices extends React.Component {
                 }
                 this.setState({
                     notices: tempNotices
+                });
+                localforage.setItem('notices-list', this.state.notices, function(result) {
+                    console.log("Notices saved to indexedDB");
                 });
             })
             .catch(function (error) {
