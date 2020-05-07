@@ -57,8 +57,8 @@ class ListNotices extends React.Component {
                 that.setState({
                     notices: value
                 })
+                console.log("Notices loaded from indexedDB");
             }
-            console.log("Notices loaded from indexedDB");
         }).catch(function(err) {
             console.log(err);
         });
@@ -74,6 +74,7 @@ class ListNotices extends React.Component {
                 this.setState({
                     notices: tempNotices
                 });
+                console.log("Notice loaded from remote");
                 localforage.setItem('notices-list', this.state.notices, function(result) {
                     console.log("Notices saved to indexedDB");
                 });

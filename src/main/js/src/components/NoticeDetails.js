@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Button, Spinner } from "react-bootstrap";
+import localforage from "localforage";
 
 class NoticeDetails extends React.Component {
 
@@ -13,6 +14,25 @@ class NoticeDetails extends React.Component {
     }
 
     componentDidMount = () => {
+        let that = this;
+        localforage.getItem('notices-list').then(function(value) {
+            if(value != null){
+                let noticeById = value.find( obj => {
+                    return obj.id === that.props.match.params.id
+                })
+                if (noticeById != null)
+                {
+                    that.setState({
+                        notice: noticeById,
+                        loaded: true
+                    })
+                    console.log("Notice loaded from indexedDB");
+                }
+            }
+        }).catch(function(err) {
+            console.log(err);
+        });
+
         axios.get("https://notice-board-wzas.herokuapp.com/api/notice/" + this.props.match.params.id)
             .then(response => {
                 let tempNotice = response.data;
@@ -22,6 +42,7 @@ class NoticeDetails extends React.Component {
                     notice: tempNotice,
                     loaded: true
                 });
+                console.log("Notice loaded from remote");
             }).catch(error => {
             alert(error.response.data);
             this.props.history.goBack();
