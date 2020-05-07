@@ -51,9 +51,13 @@ class ListNotices extends React.Component {
     componentDidMount = () => {
         let that = this;
         localforage.getItem('notices-list').then(function(value) {
-            that.setState({
-              notices: value
-            })
+            console.log("Value:");
+            console.log(value);
+            if(value != null){
+                that.setState({
+                    notices: value
+                })
+            }
             console.log("Notices loaded from indexedDB");
         }).catch(function(err) {
             console.log(err);
