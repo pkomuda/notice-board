@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import Request from "handle-failed-requests-js/src";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Form, FormControl, FormGroup, FormLabel } from "react-bootstrap";
 
@@ -59,11 +59,12 @@ class AddNotice extends React.Component {
     };
 
     handleSubmit = () => {
+        var req = new Request();
         if (this.checkValidation()) {
             let tempNotice = {...this.state.notice};
             tempNotice["id"] = uuidv4();
             tempNotice["added"] = new Date();
-            axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
+            req.send("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
                 .then(response => {
                     alert(response.data);
                     this.props.history.goBack();
