@@ -105,7 +105,7 @@ class AddNotice extends React.Component {
                     </FormGroup>
                     <Button onClick={this.handleSubmit}>Submit</Button>
                 </Form>
-                <Button style={{marginTop: "1em"}} onClick={this.props.history.goBack}>Back</Button>
+                <Button style={{marginTop: "1em"}} onClick={this.props.history.goBack}>Cancel</Button>
             </div>
         )
     }

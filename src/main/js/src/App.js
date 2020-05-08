@@ -6,22 +6,26 @@ import ListNotices from "./components/ListNotices";
 import NoticeDetails from "./components/NoticeDetails";
 import AddNotice from "./components/AddNotice";
 import NotFound from "./components/NotFound";
+import NavigationBar from "./components/NavigationBar";
 
 class App extends React.Component {
 
     render() {
         return (
-            <Router>
-                <Container>
-                    <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route path="/notices" component={ListNotices}/>
-                        <Route path="/notice/:id" component={NoticeDetails}/>
-                        <Route path="/addnotice" component={AddNotice}/>
-                        <Route component={NotFound}/>
-                    </Switch>
-                </Container>
-            </Router>
+            <React.Fragment>
+                <Router>
+                    <NavigationBar/>
+                    <Container>
+                        <Switch>
+                            <Route exact path="/" component={Home}/>
+                            <Route path="/notices" component={ListNotices}/>
+                            <Route path="/notice/:id" component={NoticeDetails}/>
+                            <Route path="/addnotice" component={AddNotice}/>
+                            <Route component={NotFound}/>
+                        </Switch>
+                    </Container>
+                </Router>
+            </React.Fragment>
         );
     }
 }

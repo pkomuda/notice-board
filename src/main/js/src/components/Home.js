@@ -1,5 +1,4 @@
 import React from "react";
-import {Button} from "react-bootstrap";
 
 class Home extends React.Component {
 
@@ -14,7 +13,6 @@ class Home extends React.Component {
                 <p>Krystian Kowalski 216808</p>
                 <p>Gabriel Nowak 216848</p>
                 <p>Szymon Rutkowski 216881</p>
-                <Button onClick={() => this.props.history.push("/notices")}>Notices</Button>
             </div>
         )
     }

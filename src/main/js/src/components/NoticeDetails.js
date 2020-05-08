@@ -72,12 +72,12 @@ class NoticeDetails extends React.Component {
 
                     <h5>Phone number</h5>
                     <p>{this.state.notice["phoneNumber"]}</p>
-                    <Button onClick={this.props.history.goBack}>Back</Button>
                 </div>
             )
         } else {
             return (
                 <div>
+                    <h1>Notice details</h1>
                     <Spinner animation="border"/>
                 </div>
             )

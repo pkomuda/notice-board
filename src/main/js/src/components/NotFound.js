@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 
 class NotFound extends React.Component {
 
@@ -7,7 +6,6 @@ class NotFound extends React.Component {
         return (
             <div>
                 <h1>Page not found</h1>
-                <Button onClick={this.props.history.goBack}>Back</Button>
             </div>
         )
     }

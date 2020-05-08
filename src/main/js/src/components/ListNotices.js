@@ -111,7 +111,6 @@ class ListNotices extends React.Component {
             <div>
                 <h1>Notices</h1>
                 {this.renderTable()}
-                <Button onClick={this.props.history.goBack}>Back</Button>
             </div>
         )
     }
