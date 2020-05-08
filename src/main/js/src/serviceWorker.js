@@ -10,8 +10,6 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-import swal from 'sweetalert'
-
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
@@ -126,13 +124,6 @@ function checkValidServiceWorker(swUrl, config) {
       console.log(
         "No internet connection found. App is running in offline mode."
       );
-
-      swal({
-        title: "You are offline",
-        text: "Displayed data may be out of date",
-        icon: "warning",
-        closeOnClickOutside: true
-      });
     });
 }
 
