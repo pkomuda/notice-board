@@ -1,12 +1,17 @@
 import React from "react";
-import Request from "handle-failed-requests-js/src";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Form, FormControl, FormGroup, FormLabel } from "react-bootstrap";
+import localforage from "localforage";
 
 class AddNotice extends React.Component {
 
     constructor(props) {
         super(props);
+        window.addEventListener('offline', () => {
+            console.log('came offline');
+        });
+        window.addEventListener('online', () => console.log('came online'));
         this.state = {
             notice: {"title": "", "description": "", "publisher": "", "phoneNumber": 0},
             valid: {"title": true, "description": true, "publisher": true, "phoneNumber": true}
@@ -59,22 +64,48 @@ class AddNotice extends React.Component {
     };
 
     handleSubmit = () => {
-        var req = new Request();
+        let tempNotice = {...this.state.notice};
+        tempNotice["id"] = uuidv4();
+        tempNotice["added"] = new Date();
+        let list = [];
         if (this.checkValidation()) {
-            let tempNotice = {...this.state.notice};
-            tempNotice["id"] = uuidv4();
-            tempNotice["added"] = new Date();
-            req.send("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
-                .then(response => {
-                    alert(response.data);
-                    this.props.history.goBack();
-                }).catch(error => {
-                alert(error.response.data);
-            });
+            if (!navigator.onLine) {
+                localforage.getItem("notice-adder").then(function (result) {
+                    for(let i = 0 ; i<result.size; i++){
+                        list.push(result[i]);
+                    }
+                })
+                list.push(tempNotice);
+                console.log(list);
+                localforage.setItem('notice-adder', list, function (result) {
+                    console.log("Notices saved to indexedDB");
+                });
+
+            }
+            window.ononline = () => {
+                localforage.getItem('notice-adder').then(function (result) {
+                    for (let notice in result) {
+                        axios.post("https://notice-board-wzas.herokuapp.com/api/notice", notice)
+                            .then(response => {
+                                alert(response.data);
+                            }).catch(error => {
+                            console.log(error);
+                        });
+                    }
+                    list.clear();
+                    localforage.setItem('notice-adder', list);
+                });
+                axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
+                    .then(response => {
+                        alert(response.data);
+                        this.props.history.goBack();
+                    }).catch(error => {
+                });
+            }
         } else {
-            alert("Please fill out every field in the form.");
+            alert("Please fill out every field in the form.")
         }
-    };
+    }
 
     render() {
         return (
