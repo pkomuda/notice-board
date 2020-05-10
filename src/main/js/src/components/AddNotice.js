@@ -3,6 +3,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Form, FormControl, FormGroup, FormLabel } from "react-bootstrap";
 import localforage from "localforage";
+import swal from 'sweetalert';
 
 class AddNotice extends React.Component {
 
@@ -87,7 +88,7 @@ class AddNotice extends React.Component {
                     for (let notice in result) {
                         axios.post("https://notice-board-wzas.herokuapp.com/api/notice", notice)
                             .then(response => {
-                                alert(response.data);
+                                swal(response.data);
                             }).catch(error => {
                             console.log(error);
                         });
@@ -97,13 +98,13 @@ class AddNotice extends React.Component {
                 });
                 axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
                     .then(response => {
-                        alert(response.data);
+                        swal(response.data);
                         this.props.history.goBack();
                     }).catch(error => {
                 });
             }
         } else {
-            alert("Please fill out every field in the form.")
+            swal("Please fill out every field in the form.")
         }
     }
 
