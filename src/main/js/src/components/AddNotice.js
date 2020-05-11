@@ -103,6 +103,14 @@ class AddNotice extends React.Component {
                     }).catch(error => {
                 });
             }
+            if(navigator.onLine){
+                axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
+                    .then(response => {
+                        swal(response.data);
+                        this.props.history.goBack();
+                    }).catch(error => {
+                });
+            }
         } else {
             swal("Please fill out every field in the form.")
         }
