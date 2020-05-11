@@ -80,7 +80,14 @@ class AddNotice extends React.Component {
                 console.log(list);
                 localforage.setItem('notice-adder', list, function (result) {
                     console.log("Notices saved to indexedDB");
+                    swal({
+                        title: "Offline",
+                        text: "Notice will be cached",
+                        icon: "warning",
+                        closeOnClickOutside: true
+                    });
                 });
+                this.props.history.goBack();
 
             }
             window.ononline = () => {
@@ -93,7 +100,6 @@ class AddNotice extends React.Component {
                             console.log(error);
                         });
                     }
-                    list.clear();
                     localforage.setItem('notice-adder', list);
                 });
                 axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
