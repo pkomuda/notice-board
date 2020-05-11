@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 class NavigationBar extends React.Component {
 
     render() {
-        if(!navigator.onLine) {
+        window.onoffline = () => {
             swal({
                 title: "You are offline",
                 text: "Displayed data may be out of date",
