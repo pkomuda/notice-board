@@ -9,9 +9,17 @@ class NavigationBar extends React.Component {
     render() {
         window.onoffline = () => {
             swal({
-                title: "You are offline",
+                title: "You are offline :( ",
                 text: "Displayed data may be out of date",
                 icon: "warning",
+                closeOnClickOutside: true
+            });
+        }
+        window.ononline = () => {
+            swal({
+                title: "You are back online :) ",
+                text: "Data will be synced",
+                icon: "info",
                 closeOnClickOutside: true
             });
         }
