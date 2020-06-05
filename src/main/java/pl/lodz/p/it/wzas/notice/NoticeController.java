@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Klasa udostępniająca punkty końcowe
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
@@ -15,6 +18,12 @@ public class NoticeController {
 
     private final NoticeRepository noticeRepo;
 
+    /**
+     * Dodawanie ogłoszenia
+     *
+     * @param notice ogłoszenie
+     * @return obiekt ResponseEntity
+     */
     @PostMapping("/notice")
     public ResponseEntity<String> addNotice(@RequestBody Notice notice) {
         noticeRepo.insert(notice);
@@ -23,6 +32,12 @@ public class NoticeController {
                 .body("Notice added successfully.");
     }
 
+    /**
+     * Dodawanie wielu ogłoszeń
+     *
+     * @param notices ogłoszenia
+     * @return obiekt ResponseEntity
+     */
     @PostMapping("/notices")
     public ResponseEntity<String> addManyNotices(@RequestBody List<Notice> notices) {
         noticeRepo.insert(notices);
@@ -31,6 +46,12 @@ public class NoticeController {
                 .body("Notices added successfully.");
     }
 
+    /**
+     * Pobieranie ogłoszenia
+     *
+     * @param id identyfikator ogłoszenia
+     * @return obiekt ogłoszenia
+     */
     @GetMapping("/notice/{id}")
     public ResponseEntity<?> getNotice(@PathVariable String id) {
         if (noticeRepo.findById(id).isPresent()) {
@@ -44,6 +65,11 @@ public class NoticeController {
         }
     }
 
+    /**
+     * Pobieranie wszystkich ogłoszeń
+     *
+     * @return wszystkie ogłoszenia
+     */
     @GetMapping("/notices")
     public ResponseEntity<List<Notice>> getAllNotices() {
         return ResponseEntity
@@ -51,6 +77,11 @@ public class NoticeController {
                 .body(noticeRepo.findAll());
     }
 
+    /**
+     * Usuwanie wszystkich ogłoszeń
+     *
+     * @return obiekt ResponseEntity
+     */
     @DeleteMapping("/notices")
     public ResponseEntity<String> deleteAllNotices() {
         noticeRepo.deleteAll();

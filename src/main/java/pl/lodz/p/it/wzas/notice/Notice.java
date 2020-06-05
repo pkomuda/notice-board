@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+/**
+ * Klasa reprezentująca obiekt Ogłoszenia
+ */
 @Document(collection = "notices")
 public @Data class Notice {
 
