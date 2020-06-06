@@ -15,7 +15,8 @@ class AddNotice extends React.Component {
         window.addEventListener('online', () => console.log('came online'));
         this.state = {
             notice: {"title": "", "description": "", "publisher": "", "phoneNumber": 0},
-            valid: {"title": true, "description": true, "publisher": true, "phoneNumber": true}
+            valid: {"title": true, "description": true, "publisher": true, "phoneNumber": true},
+            addQueue: []
         };
     }
 
@@ -68,45 +69,43 @@ class AddNotice extends React.Component {
         let tempNotice = {...this.state.notice};
         tempNotice["id"] = uuidv4();
         tempNotice["added"] = new Date();
-        let list = [];
+        let that = this;
         if (this.checkValidation()) {
             if (!navigator.onLine) {
+                console.log("************");
+                console.log("OFFILNEEEE")
                 localforage.getItem("notice-adder").then(function (result) {
-                    for(let i = 0 ; i<result.size; i++){
-                        list.push(result[i]);
+                    let list = [];
+                    if(result !== null) {
+                        list = result;
                     }
-                })
-                list.push(tempNotice);
-                console.log(list);
-                localforage.setItem('notice-adder', list, function (result) {
-                    console.log("Notices saved to indexedDB");
-                    swal({
-                        title: "Offline",
-                        text: "Notice will be cached",
-                        icon: "warning",
-                        closeOnClickOutside: true
+                    list.push(tempNotice);
+                    localforage.setItem('notice-adder', list, function () {
+                        console.log("Added notice saved to indexedDB");
+                        swal({
+                            title: "Offline",
+                            text: "Notice will be cached",
+                            icon: "warning",
+                            closeOnClickOutside: true
+                        });
                     });
-                });
+                })
                 this.props.history.goBack();
 
             }
             window.ononline = () => {
                 localforage.getItem('notice-adder').then(function (result) {
-                    for (let notice in result) {
-                        axios.post("https://notice-board-wzas.herokuapp.com/api/notice", notice)
+                    for (let index in result) {
+                        console.log("Posting cached notice:")
+                        console.log(result[index])
+                        axios.post("https://notice-board-wzas.herokuapp.com/api/notice", result[index])
                             .then(response => {
                                 swal(response.data);
                             }).catch(error => {
                             console.log(error);
                         });
                     }
-                    localforage.setItem('notice-adder', list);
-                });
-                axios.post("https://notice-board-wzas.herokuapp.com/api/notice", tempNotice)
-                    .then(response => {
-                        swal(response.data);
-                        this.props.history.goBack();
-                    }).catch(error => {
+                    localforage.setItem('notice-adder', []);
                 });
             }
             if(navigator.onLine){
